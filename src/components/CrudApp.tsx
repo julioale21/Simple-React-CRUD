@@ -40,7 +40,11 @@ const CrudApp: React.FC = () => {
   };
 
   const remove = (id: Knight["id"]) => {
-    setDb((db) => db.filter((item) => item.id !== id));
+    if (window.confirm("Are you sure that you want to remove?")) {
+      setDb((db) => db.filter((item) => item.id !== id));
+    } else {
+      return;
+    }
   };
 
   const update = (knight: Knight) => {
