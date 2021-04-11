@@ -54,7 +54,7 @@ const CrudForm: React.FC<Props> = ({ create, dataToEdit, update, setDataToEdit }
 
   return (
     <Fragment>
-      <h3>Add Knight</h3>
+      <h3>{dataToEdit.id ? "Edit" : "Add"} Knight</h3>
       <form onSubmit={handleSubmit}>
         <input
           name="name"
