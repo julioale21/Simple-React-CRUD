@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CrudForm from "./CrudForm";
 import CrudTable from "./CrudTable";
 import { Knight } from "./types";
@@ -32,11 +32,33 @@ const initialDb: Knight[] = [
 ];
 
 const CrudApp: React.FC = () => {
+  const [db, setDb] = useState<Knight[]>(initialDb);
+  const [dataToEdit, setDataToEdit] = useState({} as Knight);
+
+  const create = (data: Knight) => {
+    setDb([...db, data]);
+  };
+
+  const remove = (id: Knight["id"]) => {
+    setDb((db) => db.filter((item) => item.id !== id));
+  };
+
+  const update = (knight: Knight) => {
+    let newData: Knight[] = db.map((el) => (el.id === knight.id ? knight : el));
+
+    setDb(newData);
+  };
+
   return (
     <div>
       <h2>CRUD APP</h2>
-      <CrudForm />
-      <CrudTable listOfKnights={initialDb} />
+      <CrudForm
+        create={create}
+        dataToEdit={dataToEdit}
+        setDataToEdit={setDataToEdit}
+        update={update}
+      />
+      <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />
     </div>
   );
 };

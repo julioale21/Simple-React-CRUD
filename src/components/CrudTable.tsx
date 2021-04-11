@@ -4,9 +4,11 @@ import { Knight } from "./types";
 
 interface Props {
   listOfKnights: Knight[];
+  remove: (id: Knight["id"]) => void;
+  setDataToEdit: (knight: Knight) => void;
 }
 
-const CrudTable: React.FC<Props> = ({ listOfKnights }) => {
+const CrudTable: React.FC<Props> = ({ listOfKnights, remove, setDataToEdit }) => {
   return (
     <Fragment>
       <h3>List of Knight</h3>
@@ -24,7 +26,14 @@ const CrudTable: React.FC<Props> = ({ listOfKnights }) => {
               <td colSpan={3}>Without data</td>
             </tr>
           ) : (
-            listOfKnights.map((knight, index) => <CrudTableRow key={index} knight={knight} />)
+            listOfKnights.map((knight, index) => (
+              <CrudTableRow
+                key={index}
+                knight={knight}
+                remove={remove}
+                setDataToEdit={setDataToEdit}
+              />
+            ))
           )}
         </tbody>
       </table>
