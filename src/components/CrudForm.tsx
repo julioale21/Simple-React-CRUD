@@ -1,25 +1,55 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { Knight } from "./types";
 
 const initialForm = {
-  id: null,
+  id: -1,
   name: "",
   constellation: "",
 };
 
-const CrudForm: React.FC = () => {
-  const [form, setForm] = useState(initialForm);
+interface Props {
+  create: (data: Knight) => void;
+  dataToEdit: Knight;
+  setDataToEdit: (knight: Knight) => void;
+  update: (knight: Knight) => void;
+}
+
+const CrudForm: React.FC<Props> = ({ create, dataToEdit, update, setDataToEdit }) => {
+  const [form, setForm] = useState<Knight>(initialForm as Knight);
+
+  useEffect(() => {
+    if (dataToEdit.id) {
+      setForm(dataToEdit);
+    } else {
+      setForm(initialForm);
+    }
+  }, [dataToEdit]);
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line no-console
-    console.log(e.currentTarget.name);
-    // eslint-disable-next-line no-console
-    console.log(e.currentTarget.value);
+    setForm({
+      ...form,
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
   };
   const handleSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
+
+    if (!form.name || !form.constellation) return;
+
+    if (form.id === -1) {
+      const newKnight: Knight = { ...form, id: +new Date() };
+
+      create(newKnight);
+
+      handleReset();
+    } else {
+      update(form);
+      handleReset();
+    }
   };
-  const handleReset = (e: React.FormEvent<EventTarget>) => {
-    e.preventDefault();
+  const handleReset = () => {
+    setForm(initialForm);
+    setDataToEdit({} as Knight);
   };
 
   return (
@@ -30,17 +60,17 @@ const CrudForm: React.FC = () => {
           name="name"
           placeholder="Nombre"
           type="text"
-          value={form.name}
+          value={form.name || ""}
           onChange={handleChange}
         />
         <input
           name="constellation"
           placeholder="Constellation"
           type="text"
-          value={form.constellation}
+          value={form.constellation || ""}
           onChange={handleChange}
         />
-        <input type="submit" value="Send" />
+        <input type="submit" value={`${form.id === -1 ? "Add" : "Update"}`} />
         <input type="reset" value="Reset" onClick={handleReset} />
       </form>
     </Fragment>
