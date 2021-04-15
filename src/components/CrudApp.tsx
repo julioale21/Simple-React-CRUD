@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CrudForm from "./CrudForm";
 import CrudTable from "./CrudTable";
 import { Knight } from "./types";
+import { helpHttp } from "../helpers/helpHttp";
 
 const CrudApp: React.FC = () => {
   const [db, setDb] = useState<Knight[]>([]);
   const [dataToEdit, setDataToEdit] = useState({} as Knight);
+
+  const api = helpHttp();
+  const url: string = "http://localhost:5000/knights";
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    api.get(url).then((res) => setDb(res));
+  }, []);
 
   const create = (data: Knight) => {
     setDb([...db, data]);
