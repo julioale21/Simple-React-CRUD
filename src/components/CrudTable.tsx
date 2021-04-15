@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import CrudTableRow from "./CrudTableRow";
 import { Knight } from "./types";
 
@@ -10,14 +10,14 @@ interface Props {
 
 const CrudTable: React.FC<Props> = ({ listOfKnights, remove, setDataToEdit }) => {
   return (
-    <Fragment>
-      <h3>List of Knight</h3>
-      <table>
+    <div className="flex flex-col justify-center items-center w-full">
+      <h3 className="mb-6 font-bold underline">List of Knight</h3>
+      <table className="w-full table-fixed">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Constellation</th>
-            <th>Actions</th>
+          <tr className="bg-gray-200">
+            <th className="w-1/3">Name</th>
+            <th className="w-1/3">Constellation</th>
+            <th className="w-1/3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@ const CrudTable: React.FC<Props> = ({ listOfKnights, remove, setDataToEdit }) =>
           )}
         </tbody>
       </table>
-    </Fragment>
+    </div>
   );
 };
 
