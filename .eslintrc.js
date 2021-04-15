@@ -1,5 +1,6 @@
 module.exports = {
   env: {
+    node: true,
     browser: true,
     es2021: true,
   },
@@ -8,6 +9,7 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
   ],
+  plugins: ["react", "@typescript-eslint", "prettier", "import"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -16,8 +18,9 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "prettier"],
   rules: {
+    "no-console": "warn",
+    "react/prop-types": 0,
     "prettier/prettier": [
       "error",
       {
@@ -30,8 +33,6 @@ module.exports = {
         arrowParens: "always",
       },
     ],
-    "react/prop-types": 0,
-    "no-console": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
@@ -55,5 +56,6 @@ module.exports = {
       { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
       { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let"] },
     ],
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };
