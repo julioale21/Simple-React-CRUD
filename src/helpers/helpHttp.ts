@@ -12,10 +12,7 @@ export const helpHttp = () => {
     options.body = JSON.stringify(options.body) || false;
     if (!options.body) delete options.body;
 
-    // eslint-disable-next-line no-console
-    console.log(options);
-
-    setTimeout(() => controller.abort, 3000);
+    setTimeout(() => controller.abort(), 3000);
 
     return fetch(endpoint, options)
       .then((res) =>

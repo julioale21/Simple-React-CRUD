@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import CrudForm from "./CrudForm";
 import CrudTable from "./CrudTable";
 import { Knight } from "./types";
 import { helpHttp } from "../helpers/helpHttp";
+import Loader from "./Loader";
+import Message from "./Message";
 
 const CrudApp: React.FC = () => {
   const [db, setDb] = useState<Knight[]>([]);
@@ -12,8 +15,13 @@ const CrudApp: React.FC = () => {
   const url: string = "http://localhost:5000/knights";
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    api.get(url).then((res) => setDb(res));
+    api.get(url).then((res) => {
+      if (!res.err) {
+        setDb(res);
+      } else {
+        setDb([]);
+      }
+    });
   }, []);
 
   const create = (data: Knight) => {
@@ -46,6 +54,8 @@ const CrudApp: React.FC = () => {
       </div>
       <div className="col-span-2 lg:col-span-1 mb-12">
         <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />
+        <Loader />
+        <Message />
       </div>
     </div>
   );
