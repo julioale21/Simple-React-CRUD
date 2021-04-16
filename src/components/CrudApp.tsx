@@ -23,8 +23,10 @@ const CrudApp: React.FC = () => {
   const api = helpHttp();
 
   useEffect(() => {
-    setLoading(true);
-    api.get(url).then((res) => {
+    const fetchApi = async () => {
+      setLoading(true);
+      const res = await api.get(url);
+
       if (!res.err) {
         setDb(res);
         setError(null);
@@ -33,35 +35,50 @@ const CrudApp: React.FC = () => {
         setError(res);
       }
       setLoading(false);
-    });
+    };
+
+    fetchApi();
   }, [url]);
 
-  const create = (data: Knight) => {
+  const create = async (data: Knight) => {
     let options = { body: data, headers: { "content-type": "application/json" } };
 
-    api.post(url, options).then((res) => {
-      console.log(res);
+    const res = await api.post(url, options);
+
+    if (!res.err) {
+      setDb([...db, res]);
+      setError(null);
+    } else setError(res);
+  };
+
+  const update = async (data: Knight) => {
+    let options = { body: data, headers: { "content-type": "application/json" } };
+    let endpoint = `${url}/${data.id}`;
+
+    const res = await api.put(endpoint, options);
+
+    if (!res.err) {
+      let newData = db.map((el) => (el.id === data.id ? data : el));
+
+      setDb(newData);
+      setError(null);
+    } else setError(res);
+  };
+
+  const remove = async (id: Knight["id"]) => {
+    let confirmDelete = window.confirm("Estas seguro que deseas eliminar?");
+
+    if (confirmDelete) {
+      let options = { headers: { "content-type": "application/json" } };
+      let endpoint = `${url}/${id}`;
+
+      const res = await api.del(endpoint, options);
+
       if (!res.err) {
-        setDb([...db, res]);
+        setDb((db) => db.filter((el) => el.id !== id));
         setError(null);
-      } else {
-        setError(res);
-      }
-    });
-  };
-
-  const remove = (id: Knight["id"]) => {
-    if (window.confirm("Are you sure that you want to remove?")) {
-      setDb((db) => db.filter((item) => item.id !== id));
-    } else {
-      return;
+      } else setError(res);
     }
-  };
-
-  const update = (knight: Knight) => {
-    let newData: Knight[] = db.map((el) => (el.id === knight.id ? knight : el));
-
-    setDb(newData);
   };
 
   return (

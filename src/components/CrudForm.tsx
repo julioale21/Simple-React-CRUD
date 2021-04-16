@@ -74,12 +74,12 @@ const CrudForm: React.FC<Props> = ({ create, dataToEdit, update, setDataToEdit }
         />
         <div className="mt-2">
           <input
-            className="w-16 p-1 border bg-gray-100 border-gray-400 rounded mr-2"
+            className="w-16 p-1 border bg-gray-100 border-gray-400 rounded mr-2 cursor-pointer hover:bg-gray-200"
             type="submit"
             value={`${form.id === -1 ? "Add" : "Update"}`}
           />
           <input
-            className="w-16 p-1 border bg-gray-100 border-gray-400 rounded "
+            className="w-16 p-1 border bg-gray-100 border-gray-400 rounded cursor-pointer hover:bg-gray-200"
             type="reset"
             value="Reset"
             onClick={handleReset}
