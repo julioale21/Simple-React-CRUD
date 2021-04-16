@@ -21,11 +21,7 @@ const CrudTable: React.FC<Props> = ({ listOfKnights, remove, setDataToEdit }) =>
           </tr>
         </thead>
         <tbody>
-          {listOfKnights.length === 0 ? (
-            <tr>
-              <td colSpan={3}>Without data</td>
-            </tr>
-          ) : (
+          {listOfKnights.length > 0 ? (
             listOfKnights.map((knight, index) => (
               <CrudTableRow
                 key={index}
@@ -34,6 +30,12 @@ const CrudTable: React.FC<Props> = ({ listOfKnights, remove, setDataToEdit }) =>
                 setDataToEdit={setDataToEdit}
               />
             ))
+          ) : (
+            <tr>
+              <td className="text-center pt-6" colSpan={3}>
+                Sin datos
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

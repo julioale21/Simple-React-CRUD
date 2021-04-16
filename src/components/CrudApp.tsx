@@ -94,9 +94,8 @@ const CrudApp: React.FC = () => {
       <div className="col-span-2 lg:col-span-1 mb-12">
         {loading && <Loader />}
         {error && <Message message={`Error ${error.status}:  ${error.statusText}`} />}
-        {db.length > 0 && (
-          <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />
-        )}
+
+        {!loading && <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />}
       </div>
     </div>
   );
