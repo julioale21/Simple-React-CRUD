@@ -1,11 +1,16 @@
 import React from "react";
 
-const Message = () => {
+interface Props {
+  message: any;
+  color?: string;
+}
+
+const ComponentName: React.FC<Props> = ({ message, color = "red-400" }) => {
   return (
-    <div>
-      <h2>mensaje</h2>
+    <div className={`p-1 mb-1 text-center text-white bg-${color} font-bold`}>
+      <h2>{message}</h2>
     </div>
   );
 };
 
-export default Message;
+export default ComponentName;

@@ -1,9 +1,15 @@
 import React from "react";
+import "./Loader.css";
 
 const Loader = () => {
   return (
-    <div>
-      <h1>Loader</h1>
+    <div className="flex justify-center">
+      <div className="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };

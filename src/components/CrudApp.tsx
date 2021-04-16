@@ -7,25 +7,47 @@ import { helpHttp } from "../helpers/helpHttp";
 import Loader from "./Loader";
 import Message from "./Message";
 
+interface Error {
+  err: boolean;
+  status: string;
+  statusText: string;
+}
+
 const CrudApp: React.FC = () => {
   const [db, setDb] = useState<Knight[]>([]);
   const [dataToEdit, setDataToEdit] = useState({} as Knight);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const api = helpHttp();
   const url: string = "http://localhost:5000/knights";
+  const api = helpHttp();
 
   useEffect(() => {
+    setLoading(true);
     api.get(url).then((res) => {
       if (!res.err) {
         setDb(res);
+        setError(null);
       } else {
         setDb([]);
+        setError(res);
       }
+      setLoading(false);
     });
-  }, []);
+  }, [url]);
 
   const create = (data: Knight) => {
-    setDb([...db, data]);
+    let options = { body: data, headers: { "content-type": "application/json" } };
+
+    api.post(url, options).then((res) => {
+      console.log(res);
+      if (!res.err) {
+        setDb([...db, res]);
+        setError(null);
+      } else {
+        setError(res);
+      }
+    });
   };
 
   const remove = (id: Knight["id"]) => {
@@ -53,9 +75,11 @@ const CrudApp: React.FC = () => {
         />
       </div>
       <div className="col-span-2 lg:col-span-1 mb-12">
-        <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />
-        <Loader />
-        <Message />
+        {loading && <Loader />}
+        {error && <Message message={`Error ${error.status}:  ${error.statusText}`} />}
+        {db.length > 0 && (
+          <CrudTable listOfKnights={db} remove={remove} setDataToEdit={setDataToEdit} />
+        )}
       </div>
     </div>
   );
